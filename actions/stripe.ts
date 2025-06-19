@@ -4,14 +4,14 @@ import {
   createCustomer,
   getCustomerByUserId,
   updateCustomerByStripeCustomerId,
-  updateCustomerByUserId
+  updateCustomerByUserId,
+  Customer
 } from "@/actions/customers"
-import { SelectCustomer } from "@/db/schema/customers"
 import { stripe } from "@/lib/stripe"
 import { auth } from "@clerk/nextjs/server"
 import Stripe from "stripe"
 
-type MembershipStatus = SelectCustomer["membership"]
+type MembershipStatus = Customer["membership"]
 
 const getMembershipStatus = (
   status: Stripe.Subscription.Status,

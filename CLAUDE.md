@@ -16,12 +16,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run format:write` - Format code with Prettier
 - `npm run clean` - Run both lint:fix and format:write
 
-### Database
-- `npx drizzle-kit push` - Push schema changes to database
-- `npx drizzle-kit generate` - Generate migration files
-- `npx drizzle-kit migrate` - Run migrations
-- `npx bun db/seed` - Seed database
-- `npx supabase start` - Start local Supabase instance
+### Convex Backend
+- `npm run convex:dev` - Start Convex in development mode (run alongside `npm run dev`)
+- `npm run convex:deploy` - Deploy Convex functions to production
+- `npx convex init` - Initialize a new Convex project
+- `npx convex dashboard` - Open Convex dashboard in browser
 
 ### Testing
 - `npm run test` - Run all tests (unit + e2e)
@@ -45,19 +44,24 @@ This is a Next.js 15 SaaS template using the App Router with clear separation be
 
 ### Key Patterns
 - **Server Actions** in `/actions` for data mutations (customers, Stripe operations)
-- **Database Schema** in `/db/schema` using Drizzle ORM with PostgreSQL
+- **Convex Backend** in `/convex` for real-time database and serverless functions
 - **UI Components** in `/components/ui` from Shadcn UI library
-- **Authentication** handled by Clerk middleware with protected route groups
-- **Payments** integrated via Stripe with webhook handling
+- **Authentication** handled by Clerk middleware with Convex integration
+- **Payments** integrated via Stripe with Convex HTTP actions for webhooks
 
 ### Data Flow
-1. Authentication state managed by Clerk (`@clerk/nextjs`)
-2. Customer data stored in PostgreSQL via Drizzle ORM
-3. Stripe integration for subscription management
-4. Server actions handle all data mutations with proper auth checks
+1. Authentication state managed by Clerk with Convex integration
+2. Customer data stored in Convex with real-time reactivity
+3. Stripe webhooks handled by Convex HTTP actions
+4. Server actions use Convex client for data operations
 
 ### Environment Variables Required
+- `NEXT_PUBLIC_CONVEX_URL` - Convex deployment URL
+- `CONVEX_DEPLOYMENT` - Convex deployment identifier
 - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` - Clerk public key
 - `CLERK_SECRET_KEY` - Clerk secret key
+- `CLERK_JWT_ISSUER_DOMAIN` - Clerk JWT issuer domain for Convex auth
 - `STRIPE_SECRET_KEY` - Stripe secret key
-- Database connection handled by Supabase CLI
+- `STRIPE_WEBHOOK_SECRET` - Stripe webhook signing secret
+- `NEXT_PUBLIC_STRIPE_PAYMENT_LINK_YEARLY` - Stripe yearly payment link
+- `NEXT_PUBLIC_STRIPE_PAYMENT_LINK_MONTHLY` - Stripe monthly payment link
